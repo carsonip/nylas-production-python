@@ -91,8 +91,8 @@ def _is_log_in_same_fn_scope(exc_tb):
         If the current stack frame is not handling an exception, the
         information is taken from the calling stack frame, or its caller,
         and so on until a stack frame is found that is handling an
-        exception.  Here, “handling an exception” is defined as
-        “executing or having executed an except clause.” For any stack
+        exception.  Here, "handling an exception" is defined as
+        "executing or having executed an except clause." For any stack
         frame, only information about the most recently handled exception
         is accessible.
 
