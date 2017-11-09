@@ -95,6 +95,7 @@ class NylasWSGIWorker(GeventWorker):
     wsgi_handler = NylasWSGIHandler
 
     def init_process(self):
+        raise NotImplementedError()
         if MAX_BLOCKING_TIME:
             self.tracer = Tracer(max_blocking_time=MAX_BLOCKING_TIME)
             self.tracer.start()
