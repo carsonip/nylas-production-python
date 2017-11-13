@@ -1,6 +1,7 @@
 import socket
 import errno
 
+import gevent
 from gevent.pywsgi import WSGIHandler, WSGIServer
 
 from gunicorn.workers.ggevent import GeventWorker
@@ -17,10 +18,30 @@ MAX_BLOCKING_TIME = 1.
 # Same deal here (with monkeypatching).
 LOGLEVEL = 10
 
+KEEP_ALIVE_TIMEOUT = 30
+
 
 class NylasWSGIHandler(WSGIHandler):
     """Custom WSGI handler class to customize request logging. Based on
     gunicorn.workers.ggevent.PyWSGIHandler."""
+
+    def handle(self):
+        # http's keep-alive causes fd leak since gevent pyWSGI doesn't implement timeout
+        # causing "Too many open files" error in api server
+        # https://github.com/gevent/gevent/issues/649
+        # TODO(M,Carson): remove this after migrating to nginx
+        # because nginx will timeout keep-alive connections and close them for us
+        timeout = gevent.Timeout.start_new(KEEP_ALIVE_TIMEOUT)
+        try:
+            super(NylasWSGIHandler, self).handle()
+        except gevent.Timeout as ex:
+            if ex is timeout:
+                # We timed out, take appropriate action.
+                # NOTE: The socket is already closed at this point
+                pass
+            else:
+                raise
+
     def log_request(self):
         # gevent.pywsgi tries to call log.write(), but Python logger objects
         # implement log.debug(), log.info(), etc., so we need to monkey-patch
