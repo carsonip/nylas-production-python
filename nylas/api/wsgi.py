@@ -18,7 +18,7 @@ MAX_BLOCKING_TIME = 1.
 # Same deal here (with monkeypatching).
 LOGLEVEL = 10
 
-KEEP_ALIVE_TIMEOUT = 30
+KEEP_ALIVE_TIMEOUT = 90
 
 
 class NylasWSGIHandler(WSGIHandler):
