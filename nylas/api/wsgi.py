@@ -53,6 +53,11 @@ class NylasWSGIHandler(WSGIHandler):
         if request_uid is not None:
             additional_context['request_uid'] = request_uid
 
+        # Log real client IP (instead of nginx IP)
+        remote_real_ip = self.headers.get('X-Real-IP')
+        if remote_real_ip is not None:
+            additional_context['remote_real_ip'] = remote_real_ip
+
         # pywsgi negates the status code if there was a socket error
         # (https://github.com/gevent/gevent/blob/master/src/gevent/pywsgi.py#L706)
         # To make the logs clearer, use the positive status code and include
