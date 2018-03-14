@@ -59,7 +59,7 @@ class NylasWSGIHandler(WSGIHandler):
             additional_context['remote_real_ip'] = remote_real_ip
 
         if 'X-Custom-Status-Code' in self.response_headers:
-            additional_context['custom_status_code'] = int(self.response_headers['X-Status-Code'])
+            additional_context['custom_status_code'] = int(self.response_headers['X-Custom-Status-Code'])
 
         # pywsgi negates the status code if there was a socket error
         # (https://github.com/gevent/gevent/blob/master/src/gevent/pywsgi.py#L706)
