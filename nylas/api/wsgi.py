@@ -59,7 +59,7 @@ class NylasWSGIHandler(WSGIHandler):
             additional_context['remote_real_ip'] = remote_real_ip
 
         # Look for X-Custom-Status-Code header
-        custom_status_code = next(h[1] for h in self.response_headers if h[0] == 'X-Custom-Status-Code')
+        custom_status_code = next((h[1] for h in self.response_headers if h[0] == 'X-Custom-Status-Code'), None)
         if custom_status_code:
             additional_context['custom_status_code'] = int(custom_status_code)
 
