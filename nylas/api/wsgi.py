@@ -58,6 +58,11 @@ class NylasWSGIHandler(WSGIHandler):
         if remote_real_ip is not None:
             additional_context['remote_real_ip'] = remote_real_ip
 
+        # App client distribution channel
+        channel = self.headers.get('Channel')
+        if channel is not None:
+            additional_context['channel'] = channel
+
         # Look for X-Custom-Status-Code header
         custom_status_code = next((h[1] for h in self.response_headers if h[0] == 'X-Custom-Status-Code'), None)
         if custom_status_code:
