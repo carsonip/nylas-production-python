@@ -63,6 +63,15 @@ class NylasWSGIHandler(WSGIHandler):
         if channel is not None:
             additional_context['channel'] = channel
 
+        # Client info
+        client_version = self.headers.get('Client-Version')
+        if client_version is not None:
+            additional_context['client_version'] = client_version
+
+        _os = self.headers.get('OS')
+        if _os is not None:
+            additional_context['os'] = _os
+
         # Look for X-Custom-Status-Code header
         custom_status_code = next((h[1] for h in self.response_headers if h[0] == 'X-Custom-Status-Code'), None)
         if custom_status_code:
