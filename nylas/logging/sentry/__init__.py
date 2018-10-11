@@ -49,7 +49,7 @@ def sentry_alert(*args, **kwargs):
             get_sentry_client().captureException(*args, **kwargs)
         except URLError:
             logger = get_logger()
-            logger.error('Error occured when sending exception to Sentry')
+            logger.error('Error occurred when sending exception to Sentry')
 
 
 def log_uncaught_errors(logger=None, **kwargs):

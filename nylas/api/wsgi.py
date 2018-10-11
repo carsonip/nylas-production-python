@@ -64,6 +64,10 @@ class NylasWSGIHandler(WSGIHandler):
             additional_context['channel'] = channel
 
         # Client info
+        client_type = self.headers.get('Client-Type')
+        if client_type is not None:
+            additional_context['client_type'] = client_type
+
         client_version = self.headers.get('Client-Version')
         if client_version is not None:
             additional_context['client_version'] = client_version
