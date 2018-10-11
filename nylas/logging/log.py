@@ -144,7 +144,8 @@ def _safe_exc_info_renderer(_, __, event_dict):
             if exc_info[1]:
                 exc_info[1].message = error
             else:
-                event_dict['error_message'] = error
+                # Do not simply replace 'error_message' to avoid discarding useful error message info
+                event_dict['error_message'] = '%s %s' % (error, event_dict.get('error_message', ''))
                 exc_info = (None, None, None)
     elif exc_info is False or include_exception is False:
         # This means someone explicitly asked us to not include any error
